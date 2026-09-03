@@ -20,7 +20,7 @@ ax.axvline(np.mean(y), color="#cc3311", lw=1.2, ls="--", label=f"mean {np.mean(y
 ax.set(xlabel="open->close return", ylabel="count", title="2024 test: open-to-close return on offering days")
 ax.legend()
 fig.tight_layout()
-fig.savefig("output/fig_target_hist.png")
+fig.savefig("output/fig_target_hist.png", bbox_inches="tight")
 
 # 2. Mean actual return by predicted decile
 dec = pd.qcut(pred, 10, labels=False, duplicates="drop")
@@ -30,7 +30,7 @@ ax.bar(g.index, g["mean"], color=["#cc3311" if v < 0 else "#228833" for v in g["
 ax.set(xlabel="predicted-return decile (0 = most bearish)", ylabel="mean actual open->close",
        title="Monotonic signal: actual return by predicted decile (2024)")
 fig.tight_layout()
-fig.savefig("output/fig_decile.png")
+fig.savefig("output/fig_decile.png", bbox_inches="tight")
 
 # 3. Cumulative PnL: short bottom-quintile of predictions each day, equal weight
 k = max(1, int(len(pred) * 0.2))
@@ -46,6 +46,6 @@ ax.set(xlabel="", ylabel=chr(931) + " daily mean short return (gross)",
              f"{k} names over {daily.size} event-days, mean {daily.mean():+.3f}/name, no costs")
 fig.autofmt_xdate()
 fig.tight_layout()
-fig.savefig("output/fig_pnl.png")
+fig.savefig("output/fig_pnl.png", bbox_inches="tight")
 
 print("wrote output/fig_*.png")
