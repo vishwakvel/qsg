@@ -1,28 +1,14 @@
-"""Sanity checks that the tradable blend's out-of-sample signal isn't noise.
-Run after train_eval.py: python robustness_check.py
-
-1. Permutation test: shuffle the training labels, refit ridge (alpha fixed at
-   the CV-selected value to keep 200 refits cheap), score against the real,
-   unshuffled 2024 test set. This is the R2 achievable with no real
-   train/test relationship -- if the real R2 sits far outside this null
-   distribution, the signal isn't an artifact of the pipeline.
-2. Block bootstrap by target_date: resample whole trading days (not
-   individual rows) with replacement, since names sharing a target_date are
-   not independent draws. Gives a 95% interval on test R2 and short-leg PnL.
-"""
 import json
-
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
 from sklearn.metrics import r2_score
-
 from features import SEED, build_feature_matrix, winsorized_target
 from train_eval import clip_pred, fit_predict, trading_eval
 
 N_PERMUTATIONS = 200
 N_BOOTSTRAP = 1000
-RIDGE_ALPHA = 300  # the value best_ridge_alpha selects; fixed here so the permutation loop doesn't rerun CV 200 times
+RIDGE_ALPHA = 300
 
 
 def permutation_null(x_train, x_test, y_train, y_test, n=N_PERMUTATIONS, seed=SEED):
@@ -70,10 +56,6 @@ def main():
 
     out = {
         "permutation_test": {
-            "note": "200 ridge refits on label-shuffled training targets (alpha fixed "
-                    "at the CV-selected value), each scored against the real 2024 test "
-                    "set -- the null distribution of R2 achievable with no genuine "
-                    "train/test relationship.",
             "real_ridge_test_r2": float(real_r2),
             "null_mean": float(null_r2.mean()),
             "null_std": float(null_r2.std()),
@@ -81,8 +63,6 @@ def main():
             "real_exceeds_null_pct": float(100 * np.mean(real_r2 > null_r2)),
         },
         "block_bootstrap_by_date": {
-            "note": "1000 resamples of whole trading days (not individual rows) with "
-                    "replacement, tradable blend predictions, 95% percentile interval.",
             "r2_point": float(r2_score(y_test, pred_blend)),
             "r2_ci95": [float(np.percentile(boot_r2, 2.5)), float(np.percentile(boot_r2, 97.5))],
             "r2_pct_le_zero": float(np.mean(boot_r2 <= 0)),
