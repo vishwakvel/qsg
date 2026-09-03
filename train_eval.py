@@ -15,9 +15,6 @@ def clip_pred(p):
 
 
 def directional_accuracy(y_true, y_pred):
-    # sign(0) == 0 never matches sign(y_true), so a constant-zero prediction
-    # scores ~0 instead of "no call made" -- exclude predictions of exactly
-    # zero from the denominator rather than counting them as misses.
     called = np.sign(y_pred) != 0
     if not called.any():
         return float("nan")
@@ -25,9 +22,6 @@ def directional_accuracy(y_true, y_pred):
 
 
 def date_group_folds(dates, n_splits=4):
-    """TimeSeriesSplit over unique sorted target_date values, expanded back to
-    row indices, so offerings sharing a target_date (up to 11 do) never split
-    across a train/validation boundary."""
     uniq = np.sort(pd.unique(dates))
     for tr_d, va_d in TimeSeriesSplit(n_splits=n_splits).split(uniq):
         tr_dates, va_dates = set(uniq[tr_d]), set(uniq[va_d])
@@ -45,12 +39,6 @@ def metrics(y_true, y_pred):
 
 
 def best_ridge_alpha(train_df, include_gap=True):
-    # Rebuild the TF-IDF vocabulary, scaler, and winsorization bounds inside
-    # each fold, fit on that fold's train rows only. Fitting these once on
-    # the whole training set before CV (the previous approach) lets alpha
-    # selection see validation rows through the transforms even though the
-    # final refit is still train-only -- it doesn't leak into the 2024 test
-    # numbers, but it does bias which alpha CV thinks is best.
     dates = train_df["target_date"].to_numpy()
     alphas = [3, 10, 30, 100, 300]
     best_alpha, best_score = alphas[0], -np.inf
@@ -124,15 +112,8 @@ def main():
 
     y_train = winsorized_target(train_df)
     y_test = test_df["target_ret"].to_numpy(dtype=float)
-
-    # Tradable variant: no gap_pct. A market-on-open order is placed before
-    # 9:30 using only overnight news + prior-day price history, so this is
-    # the number a real short-the-open strategy would actually see.
+    
     preds = fit_predict(train_df, test_df, include_gap=False)
-    # Oracle variant: includes gap_pct as an upper-bound reference only. Not
-    # tradable -- it conditions on the same open print you'd need to be
-    # filled at, so it's reported purely to show how much of the apparent
-    # edge was actually just "the print already moved."
     preds_oracle = fit_predict(train_df, test_df, include_gap=True)
 
     results["baseline_zero"] = metrics(y_test, np.zeros_like(y_test))
