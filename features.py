@@ -7,20 +7,12 @@ from sklearn.preprocessing import StandardScaler
 SEED = 0
 TFIDF_MAX_FEATURES = 500
 
-# Known before the 9:30 print: overnight news content/timing, prior-day price
-# history, and issuer history. None of these require having already seen
-# today's open.
 PRE_OPEN_COLS = [
     "log_prior_close", "discount_pct", "has_discount", "log_dollar_amount",
     "n_news", "hours_before_open", "headline_len", "body_len", "dow",
     "offering_seq", "has_prior_offering", "symbol_avg_prior_ret", "days_since_last_offering",
     "vol_20d", "mom_5d",
 ]
-# gap_pct = (open - prior_close) / prior_close is only known once the open
-# print exists -- the same instant you'd need to be filled to trade an
-# open-to-close return, so a strategy that "trades at the open" can't
-# legitimately condition on it. Kept opt-in as an oracle/upper-bound feature,
-# never used in the tradable variant. See build_feature_matrix(include_gap=).
 NUMERIC_COLS = ["gap_pct"] + PRE_OPEN_COLS
 CLIP_COLS = ["vol_20d", "mom_5d", "symbol_avg_prior_ret"]
 
