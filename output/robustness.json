@@ -1,0 +1,25 @@
+{
+  "permutation_test": {
+    "note": "200 ridge refits on label-shuffled training targets (alpha fixed at the CV-selected value), each scored against the real 2024 test set -- the null distribution of R2 achievable with no genuine train/test relationship.",
+    "real_ridge_test_r2": 0.10135743584951418,
+    "null_mean": -0.03414961647922466,
+    "null_std": 0.01912819537204457,
+    "null_max": 0.018684761896460622,
+    "real_exceeds_null_pct": 100.0
+  },
+  "block_bootstrap_by_date": {
+    "note": "1000 resamples of whole trading days (not individual rows) with replacement, tradable blend predictions, 95% percentile interval.",
+    "r2_point": 0.11207039718294576,
+    "r2_ci95": [
+      0.04180155462121836,
+      0.18058432939517916
+    ],
+    "r2_pct_le_zero": 0.002,
+    "short_leg_pnl_point": 0.13709452793028337,
+    "short_leg_pnl_ci95": [
+      0.09262855864769357,
+      0.1778568231938023
+    ],
+    "short_leg_pnl_pct_le_zero": 0.0
+  }
+}

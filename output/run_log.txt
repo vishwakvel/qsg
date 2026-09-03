@@ -1,0 +1,113 @@
+train=1269 test=707
+{
+  "baseline_zero": {
+    "mae": 0.1017897331880915,
+    "r2": -0.017653093022980126,
+    "dir_acc": NaN
+  },
+  "baseline_train_mean": {
+    "mae": 0.10579026900184263,
+    "r2": -0.019930201093108835,
+    "dir_acc": 0.6011315417256011
+  },
+  "baseline_always_short_dir_acc": 0.6011315417256011,
+  "baseline_gap_continues_NOT_TRADABLE": {
+    "mae": 0.11338624101752422,
+    "r2": -0.29268587780687283,
+    "dir_acc": 0.4541284403669725
+  },
+  "ridge": {
+    "mae": 0.09685108526082664,
+    "r2": 0.10135743584951418,
+    "dir_acc": 0.5954738330975955,
+    "alpha": 300
+  },
+  "ridge_oracle_with_gap_pct_NOT_TRADABLE": {
+    "mae": 0.09685154150013786,
+    "r2": 0.10152306594581106,
+    "dir_acc": 0.5954738330975955
+  },
+  "random_forest": {
+    "mae": 0.09371117488259496,
+    "r2": 0.08201188794695835,
+    "dir_acc": 0.6138613861386139
+  },
+  "random_forest_oracle_with_gap_pct_NOT_TRADABLE": {
+    "mae": 0.09487358865200551,
+    "r2": 0.04418684540375384,
+    "dir_acc": 0.6025459688826026
+  },
+  "gradient_boosting": {
+    "mae": 0.09551805426706178,
+    "r2": 0.09354295717661143,
+    "dir_acc": 0.5884016973125884
+  },
+  "gradient_boosting_oracle_with_gap_pct_NOT_TRADABLE": {
+    "mae": 0.09533512684332268,
+    "r2": 0.07260654838758507,
+    "dir_acc": 0.611032531824611
+  },
+  "blend": {
+    "mae": 0.09454057614712295,
+    "r2": 0.11207039718294576,
+    "dir_acc": 0.5926449787835927
+  },
+  "blend_oracle_with_gap_pct_NOT_TRADABLE": {
+    "mae": 0.0939246462480484,
+    "r2": 0.10439884300114666,
+    "dir_acc": 0.5983026874115983
+  },
+  "logistic_direction": {
+    "accuracy": 0.5827439886845828,
+    "auc": 0.6272811447811448,
+    "baseline_majority_acc": 0.611032531824611
+  },
+  "trading_eval_blend_2024": {
+    "quantile": 0.2,
+    "n_per_leg": 141,
+    "short_leg_mean_pnl": 0.13709452793028337,
+    "short_leg_hit_rate": 0.8156028368794326,
+    "long_leg_mean_pnl": 0.03544530508513322,
+    "long_short_mean_pnl": 0.0862699165077083,
+    "all_names_sign_pnl": -0.037877916633075034
+  },
+  "trading_eval_blend_2024_oracle_with_gap_pct_NOT_TRADABLE": {
+    "quantile": 0.2,
+    "n_per_leg": 141,
+    "short_leg_mean_pnl": 0.13737474432619054,
+    "short_leg_hit_rate": 0.8226950354609929,
+    "long_leg_mean_pnl": 0.0328989546040988,
+    "long_short_mean_pnl": 0.08513684946514467,
+    "all_names_sign_pnl": -0.036326189896140865
+  },
+  "walk_forward_blend": {
+    "2023": {
+      "mae": 0.10355792938352927,
+      "r2": 0.1116959049095192,
+      "dir_acc": 0.6216216216216216,
+      "n_train": 566,
+      "n_test": 703
+    },
+    "2024": {
+      "mae": 0.09454057614712295,
+      "r2": 0.11207039718294576,
+      "dir_acc": 0.5926449787835927,
+      "n_train": 1269,
+      "n_test": 707
+    },
+    "pooled": {
+      "mae": 0.09903646219335958,
+      "r2": 0.11604022654706492,
+      "dir_acc": 0.6070921985815603,
+      "trading": {
+        "quantile": 0.2,
+        "n_per_leg": 282,
+        "short_leg_mean_pnl": 0.14601188830912118,
+        "short_leg_hit_rate": 0.7872340425531915,
+        "long_leg_mean_pnl": 0.018237958327800046,
+        "long_short_mean_pnl": 0.08212492331846061,
+        "all_names_sign_pnl": -0.04247284793228036
+      }
+    }
+  }
+}

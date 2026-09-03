@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[oc]
+.serena/
+.gstack/
+.DS_Store
+
+# raw + derived dataset -- not for redistribution, code + outputs only
+temp_*.tsv
+output/dataset.parquet
+output/train_df.parquet
+output/test_df.parquet
